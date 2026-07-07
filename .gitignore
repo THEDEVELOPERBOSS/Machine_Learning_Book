@@ -1,0 +1,15 @@
+# Ignore big data folders
+Training and Validation/
+
+# Ignore large file types anywhere
+*.zip
+*.h5
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+
+# Ignore Python cache
+__pycache__/
