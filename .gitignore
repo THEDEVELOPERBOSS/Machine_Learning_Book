@@ -13,3 +13,20 @@ Training and Validation/
 
 # Ignore Python cache
 __pycache__/
+
+# PyCharm
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
