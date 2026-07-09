@@ -1,7 +1,11 @@
-Install
-- pip install tensorflow-datasets
+Chapter 4 
 
-MNIST_WITH_A_CNN = MNIST.py 
-Kera's API = KERAS.py
-HVH = 
+Install
+- pip install tensorflow-datasets pg 68 
+- pip install tensorflow-addons pg 74
+
 Upgraded version of respective program
+MNIST_WITH_A_CNN = MNIST.py pg 68
+Kera's API = KERAS.py pg 70 
+HVH = keras_imagedatagenerator.py (only horse or humans portion) pg 72
+
