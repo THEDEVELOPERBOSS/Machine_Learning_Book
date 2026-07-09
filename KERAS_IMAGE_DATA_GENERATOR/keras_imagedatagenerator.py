@@ -1,4 +1,4 @@
-import urllib.request
+import urllib.request # Chapter 3
 import zipfile
 import tensorflow as tf
 from keras.src.layers.activations import activation

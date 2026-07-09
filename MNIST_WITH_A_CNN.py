@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow as tf # Chapter 2
 data = tf.keras.datasets.fashion_mnist
 
 (training_images, training_labels), (test_images, test_labels) = data.load_data()

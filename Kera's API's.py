@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow as tf # Chapter 1
 import numpy as np
 from tensorflow.keras import Sequential # Sequential is how you define the layers of the nerual network when using tensorflow
 from tensorflow.keras.layers import Dense

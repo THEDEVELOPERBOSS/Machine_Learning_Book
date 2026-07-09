@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow as tf # Chapter 1
 data = tf.keras.datasets.fashion_mnist # this is the way to access the data. This allows you to not have to download all the images and seperate them into training and test sets and so on.
 
 (training_images, training_labels), (test_images, test_labels) = data.load_data() # this is how to return the training sets. This is how you make the data accessible into the program I think

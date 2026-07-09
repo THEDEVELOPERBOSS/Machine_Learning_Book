@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow as tf # Chapter 1
 # this version of the program will keep running until a desired accuracy percentage is met
 class myCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
