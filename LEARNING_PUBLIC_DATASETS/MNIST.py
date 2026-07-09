@@ -4,7 +4,9 @@ mnist_data = tfds.load('fashion_mnist')
 for item in mnist_data:
     print(item)
 # load splits into a dataset containg the actual data
-mnist_train = tfds.load(name="fashion_mnist", split="train")
+mnist_train = tfds.load(name="fashion_mnist",
+                        split="train"
+)
 assert isinstance(mnist_train, tf.data.Dataset)
 print(type(mnist_train))
 # shows what the data looks like

@@ -20,8 +20,9 @@ model = tf.keras.models.Sequential([
 ])
 
 model.compile(optimizer='adam',
-        loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy']
+)
 
 model.fit(training_images, training_labels, epochs=50)
 

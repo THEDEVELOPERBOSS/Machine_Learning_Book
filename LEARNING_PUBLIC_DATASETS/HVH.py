@@ -1,7 +1,9 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
-data = tfds.load('horses_or_humans', split='train', as_supervised=True) # split ex: train, validation, test. Use it to specify what part of dataset you want to use
+data = tfds.load('horses_or_humans',
+                 split='train',
+                 as_supervised=True) # split ex: train, validation, test. Use it to specify what part of dataset you want to use
 
 train_batches = data.shuffle(100).batch(10)
 
@@ -21,7 +23,8 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(1, activation='sigmoid')
 ])
 
-model.compile(optimizer='Adam', loss='binary_crossentropy',
-metrics=['accuracy'])
+model.compile(optimizer='Adam',
+            loss='binary_crossentropy',
+            metrics=['accuracy'])
 
 history = model.fit(train_batches, epochs=10)

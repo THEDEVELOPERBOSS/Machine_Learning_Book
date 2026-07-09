@@ -67,10 +67,14 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dropout(0.2),
 ])
 # Make sure it uses a categorical lose function. Binary cross entropy will not work with more than 2 classes
-model.compile(loss='categorical_crossentropy', optimizer='rmsprop',
-              metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy']
+)
 
 # Training
 history = model.fit(train_generator, epochs=25,
-                    validation_data = validation_generator, verbose = 1)
+                    validation_data = validation_generator,
+                    verbose = 1
+)
 
