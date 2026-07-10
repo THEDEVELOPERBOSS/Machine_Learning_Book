@@ -22,24 +22,24 @@ def augmentimages(image, label):
 train = data.map(augmentimages)
 # Creates batches
 train_batches = train.shuffle(100).batch(32)
-# Example of splitting Dogs vs Cats dataset
-train_data = tfds.load(
-    'cats_vs_dogs',
-    split='train[:80%]',
-    as_supervised=True
-)
+# Example of splitting Dogs vs Cats dataset (doesn't work made for older versions but good for reference
+# train_data = tfds.load(
+#    'cats_vs_dogs',
+#    split='train[:80%]',
+#    as_supervised=True
+# )
 
-validation_data = tfds.load('cats_vs_dogs',
-                            split='train[80%:90%]' ,
-                            as_supervised=True
-)
+# validation_data = tfds.load('cats_vs_dogs',
+#                            split='train[80%:90%]' ,
+#                            as_supervised=True
+# )
 
-test_data = tfds.load('cats_vs_dogs',
-                      split='train[-10%]',
-                      as_supervised=True
-)
+# test_data = tfds.load('cats_vs_dogs',
+#                      split='train[-10%]',
+#                      as_supervised=True
+# )
 # How to check that you split it correclty. Have to iterate through whole set and count 1 by 1
-print("Checking split has been done correctly:")
-train_length = [i for i,_ in enumerate(train_data)][-1] + 1
-print(train_length)
+# print("Checking split has been done correctly:")
+# train_length = [i for i,_ in enumerate(train_data)][-1] + 1
+# print(train_length)
 # ^ very slow process so only use while debugging
