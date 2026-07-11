@@ -79,7 +79,7 @@ This is primarily a personal learning repository, but suggestions and improvemen
 
 Feel free to fork the project or open an issue if you have recommendations.
 
-Disclaimer
+## ⚖️ Disclaimer
 
 This repository contains code examples, exercises, and personal notes completed while working through AI and Machine Learning for Coders by Laurence Moroney (O'Reilly Media). 
 Much of the code is based on examples from the book and is shared for educational purposes. 
