@@ -3,7 +3,6 @@ import tensorflow_datasets as tfds
 from bs4 import BeautifulSoup
 import string
 
-from tree import sequence
 # More stopwords would be here in a deployed program
 stopwords = ['a', 'about', 'above', 'yours', 'yourself', 'yourselves', 'is']
 
@@ -47,3 +46,25 @@ reverse_word_index = dict(
 decoded_review = ' '.join([reverse_word_index.get(i, '?') for i in sequences[0]])
 
 print(decoded_review)
+
+import csv
+from bs4 import BeautifulSoup
+sentences=[]
+labels=[]
+with open('/tmp/binary.csv', encoding='utf-8') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    for row in reader:
+        labels.append(int(row[0]))
+        sentence = sentence.replace(',', ' , ')
+        sentence = sentence.replace('.', ' . ')
+        sentence = sentence.replace('-', ' - ')
+        sentence = sentence.replace('/', ' / ')
+        soup = BeautfiulSoup(sentence)
+        sentence = soup.get_text()
+        words = sentence.split()
+        filtered_sentence = ''
+        for word in words:
+            word = word.translate(table)
+            if word not in stopwords:
+                filtered_sentence = filtered_sentence + word + ' '
+        sentences.append(filtered_sentence)
