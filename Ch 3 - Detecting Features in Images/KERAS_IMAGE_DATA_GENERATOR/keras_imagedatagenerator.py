@@ -4,8 +4,8 @@ import tensorflow as tf
 from keras.src.layers.activations import activation
 from tensorflow.keras.optimizers import RMSprop
 # try to make a facial recognition version of this. Maybe a real time version
-file_name = '../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human.zip'
-training_dir = '../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human/training'
+file_name = '../../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human.zip'
+training_dir = '../../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human/training'
 
 zip_ref = zipfile.ZipFile(file_name, 'r')
 zip_ref.extractall(training_dir)
@@ -52,8 +52,8 @@ history = model.fit(
     epochs=1 # change this for train epochs number
 )
 
-validation_file_name = '../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human.zip'
-validation_dir = '../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human/validation'
+validation_file_name = '../../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human.zip'
+validation_dir = '../../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human/validation'
 
 zip_ref = zipfile.ZipFile(validation_file_name, 'r')
 zip_ref.extractall(validation_dir)

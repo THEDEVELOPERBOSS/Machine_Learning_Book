@@ -5,9 +5,9 @@ from keras.src.legacy.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
 
 
-local_zip = '../Training and Validation/ROCK_PAPER_SCISSORS_STUFF/rps.zip'
+local_zip = '../../Training and Validation/ROCK_PAPER_SCISSORS_STUFF/rps.zip'
 
-extract_folder = r'../Training and Validation/ROCK_PAPER_SCISSORS_STUFF/rps'
+extract_folder = r'../../Training and Validation/ROCK_PAPER_SCISSORS_STUFF/rps'
 os.makedirs(extract_folder, exist_ok=True)
 
 with zipfile.ZipFile(local_zip, 'r') as zip_ref:
