@@ -70,6 +70,14 @@ Then run any Python file from the chapter you're working on.
 - [ ] Chapter 10
 - [ ] Chapter 11
 - [ ] Chapter 12
+- [ ] Chapter 13
+- [ ] Chapter 14
+- [ ] Chapter 15
+- [ ] Chapter 16
+- [ ] Chapter 17
+- [ ] Chapter 18
+- [ ] Chapter 19
+- [ ] Chapter 20
 
 *(Updated as I complete each chapter.)*
 
