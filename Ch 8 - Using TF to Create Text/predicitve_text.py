@@ -6,7 +6,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 
 tokenizer = Tokenizer()
 
-data = ('In the town of Athy one Jeremy Lanigan \n Battered away til he hadnt a pount \n His father died and made him a man again \n Left him a farm and ten acres of ground \n He gave a grand party for friends and relations \n Who didnt forget him when come to the wall, \n And if youll but listen Ill make your eyes glisten \n Of the rows and the ructions of Langians Ball. \n Myself to be sure got free inviation, \n For all the nice girls and boys I might ask, \n And just in a minute both friends and relations \n Were dancing round merry as bees round a cask. \n Judy ODaly, that nice little milliner, \n She tipped me a wink for to give her a call, \n And I soon arrived with Peggy McGilligan \n Just in time for the Lanigans Ball')
+data = open('irish-lyrics.csv').read()
 corpus = data.lower().split('\n')
 # Loads and tokenizes the data
 tokenizer.fit_on_texts(corpus)
@@ -45,7 +45,7 @@ model.add(Dense(total_words, activation='softmax'))
 # Ex: Cateogorical cross entropy and an optimizer like Adam
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # Since its a simple model with low data training for a while is possible
-history = model.fit(xs, ys, epochs=1500, verbose=1)
+history = model.fit(xs, ys, epochs=1000, verbose=1)
 # Generating Text
 # Creates seed text: Initial Expression on which the network will base all the content it generates.
 # It does this by predicting the next word
