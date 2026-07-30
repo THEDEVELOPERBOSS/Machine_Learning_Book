@@ -39,6 +39,7 @@ ys = tf.keras.utils.to_categorical(labels, num_classes=total_words)
 from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional
 model = Sequential()
 model.add(Embedding(total_words, 8))
+model.add(Bidirectional(LSTM(max_sequence_len-1, return_sequences='True')))
 model.add(Bidirectional(LSTM(max_sequence_len-1)))
 model.add(Dense(total_words, activation='softmax'))
 # Compile model with categorical loss funciton
