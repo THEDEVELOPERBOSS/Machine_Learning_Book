@@ -5,28 +5,48 @@ from keras.src.utils import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 
 tokenizer = Tokenizer()
+# When loading the data instead of splitting each song line into a "sentence", we can create them on the fly from words in corpus
+# here
+window_size = 10
+sentences = []
 
 data = open('irish-lyrics.csv').read()
 corpus = data.lower().split('\n')
+
+# Turns the corpus into one long list of words
+words = ' '.join(corpus).split()
+
+# Creates a sliding window of words
+range_size = len(words) - window_size + 1
+for i in range(range_size):
+    thissentence = ''
+    for j in range(window_size):
+        thissentence = thissentence + words[i + j]
+        if j < window_size - 1:
+            thissentence = thissentence + ' '
+    sentences.append(thissentence)
+# here
+
 # Loads and tokenizes the data
-tokenizer.fit_on_texts(corpus)
+tokenizer.fit_on_texts(sentences)
 total_words = len(tokenizer.word_index) + 1
-# Goes through each line of the corpus and turns it into list of tokens using texts_to_sequences
-# Splits each list by looping through each token and making a list of all tokens up to it
-input_sequences = []
-for line in corpus:
-    token_list = tokenizer.texts_to_sequences([line])[0]
-    for i in range(1, len(token_list)):
-        n_gram_sequence = token_list[:i+1]
-        input_sequences.append(n_gram_sequence)
+
+# Turns each sliding window into a list of tokens
+input_sequences = tokenizer.texts_to_sequences(sentences)
+
 import numpy as np
+
 # Uses prepadding to make them all the same shape
 max_sequence_len = max([len(x) for x in input_sequences])
 
-input_sequences = np.array(pad_sequences(input_sequences,
-                                          maxlen=max_sequence_len,
-                                          padding='pre'
-))
+input_sequences = np.array(
+    pad_sequences(
+        input_sequences,
+        maxlen=max_sequence_len,
+        padding='pre'
+    )
+)
+
 print(input_sequences[:5])
 # Separates labels from input sequences
 xs, labels = input_sequences[:,:-1],input_sequences[:,-1]
