@@ -1,13 +1,5 @@
-import tensorflow_datasets as tfds
+import matplotlib.pyplot as plt
+plt.plot([1, 2, 3], [1, 4, 9])
+plt.show()
 
-print("TFDS Version:", tfds.__version__)
-
-ds = tfds.load(
-    "imdb_reviews",
-    split="train",
-    download=True,
-    as_supervised=True
-)
-
-print("Success!")
 # used to test bits of code that aren't working
