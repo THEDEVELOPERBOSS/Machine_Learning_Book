@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib 
+from tensorflow import keras
 # Set backend before importing pyplot to avoid import errors in some environments
 try:
     matplotlib.use("TkAgg")
@@ -45,6 +46,45 @@ series = baseline + trend(time, slope) + seasonality(time, period=365, amplitude
 
 # Update with noise
 series += noise(time, noise_level, seed=42)
+
+# Less accurate way
+# Predicts series from a split time period onwards
+# Period you want to split is in variable split_time
+split_time = len(time) - 365
+x_valid = series[split_time:]
+naive_forecast = series[split_time - 1:-1]
+
+# MSE takes differnce between predicted value and actual value at time (t), square it(to remove negatives), finds average
+mse = np.mean(np.square(x_valid - naive_forecast))
+mae = np.mean(np.abs(x_valid - naive_forecast))
+print(mse)
+# MAE calculate differnce of predicted and actual at time (t) take its absolute value(to remove negatives), finds average 
+print(mae)
+# More accurate way 
+# Takes a group of 30 values instead of t - 1, averages out, and sets that to predicted value at time
+def moving_average_forecast(series, window_size):
+    # Forecasts the mean of the last few values.
+    # If window_size=1, then this is equivalent to naive forecast
+    forecast = []
+    for time in range(len(series) - window_size):
+        forecast.append(series[time:time + window_size].mean())
+    return np.array(forecast)
+
+moving_avg = moving_average_forecast(series, 30)[split_time - 30:]
+
+time_valid = time[split_time:]
+plt.figure(figsize=(10, 6))
+plot_series(time_valid, x_valid)
+plot_series(time_valid, moving_avg)
+
+# Smooths out trends and seasonality using differencing
+# Subtracts value at t - 365 from the value at t. Results in a flatter diagram
+diff_series = (series[365:] - series[:-365])
+diff_time = time[365:]
+# Calculates moving average of those values and add back in past values
+diff_moving_avg = moving_average_forecast(diff_series, 50)[split_time - 365 - 50:]
+
+diff_moving_avg_plus_smooth_past = moving_average_forecast(series[split_time - 370:-360], 10) + diff_moving_avg
 
 # This will make it show the graph. Doesn't show this in the book
 plot_series(time, series)

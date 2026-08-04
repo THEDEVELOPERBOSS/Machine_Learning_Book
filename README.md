@@ -66,7 +66,7 @@ Then run any Python file from the chapter you're working on.
 - [X] Chapter 6
 - [X] Chapter 7
 - [X] Chapter 8
-- [ ] Chapter 9
+- [X] Chapter 9
 - [ ] Chapter 10
 - [ ] Chapter 11
 - [ ] Chapter 12
