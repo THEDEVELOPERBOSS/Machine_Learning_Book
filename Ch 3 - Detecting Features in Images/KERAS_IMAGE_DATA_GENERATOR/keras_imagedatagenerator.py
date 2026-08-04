@@ -27,7 +27,9 @@ training_dir = (
 with zipfile.ZipFile(file_name, "r") as zip_ref:
     zip_ref.extractall(training_dir)
 
+from tensorflow.keras.utils import load_img
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing import image
 
 # All images will be rescaled by 1./255
 train_datagen = ImageDataGenerator(rescale=1/255)
@@ -123,7 +125,6 @@ train_datagen = ImageDataGenerator( # tweak these as needed and find optimal amo
     horizontal_flip=True, # Randomly flipping the image horizontally or vertically
     fill_mode='nearest' # Filling in any missing pixels after a move or shear with nearest neighbors
     )
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import layers
 from tensorflow.keras import Model
 from tensorflow.keras.applications.inception_v3 import InceptionV3
