@@ -110,7 +110,7 @@ wc=tokenizer.word_counts
 print(wc)
 from collections import OrderedDict
 # Number of times the words appear in the dataset. Ignore stopwords when doing this
-OrderedDict([('former', 75)]), ('versace', 1), ('store', 35), ('clerk', 8), ('sues', 12), ('secret', 68), ('black', 203), ('code', 16)])
+OrderedDict([('former', 75)]), ('versace', 1), ('store', 35), ('clerk', 8), ('sues', 12), ('secret', 68), ('black', 203), ('code', 16)
 # Sorts into descending order of word volume because its a OrderedDict
 newlist = (OrderedDict(sorted(wc.items(), key=lambda t: t[1], reverse=True)))
 print(newlist)
@@ -128,7 +128,7 @@ for item in newlist:
     ys.append(newlist[item]),
 
 plt.plot(xs,ys),
-plt.axis([300,10000,0,100])# Zooms in on data by changing axis fo plot before calling plt.show. Looks at volume of words 300 to 10000 on x-axis with scale from 0 to 100 on y-axis
+plt.axis([300,10000,0,100]),# Zooms in on data by changing axis fo plot before calling plt.show. Looks at volume of words 300 to 10000 on x-axis with scale from 0 to 100 on y-axis
 plt.show())
 # New model architecture
 model = tf.keras.Sequential([

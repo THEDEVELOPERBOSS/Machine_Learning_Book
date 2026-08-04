@@ -1,15 +1,31 @@
 import urllib.request # Chapter 3
+
 import zipfile
 import tensorflow as tf
-from keras.src.layers.activations import activation
 from tensorflow.keras.optimizers import RMSprop
+import os
+from pathlib import Path
+import zipfile
 # try to make a facial recognition version of this. Maybe a real time version
-file_name = '../../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human.zip'
-training_dir = '../../Training and Validation/KERAS_IMAGE_DATA_GENERATOR_STUFF/horse-or-human/training'
+script_dir = Path(__file__).resolve().parent
 
-zip_ref = zipfile.ZipFile(file_name, 'r')
-zip_ref.extractall(training_dir)
-zip_ref.close()
+file_name = (
+    script_dir.parent.parent
+    / "Training and Validation"
+    / "KERAS_IMAGE_DATA_GENERATOR_STUFF"
+    / "horse-or-human.zip"
+)
+
+training_dir = (
+    script_dir.parent.parent
+    / "Training and Validation"
+    / "KERAS_IMAGE_DATA_GENERATOR_STUFF"
+    / "horse-or-human"
+    / "training"
+)
+
+with zipfile.ZipFile(file_name, "r") as zip_ref:
+    zip_ref.extractall(training_dir)
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 

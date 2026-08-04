@@ -14,7 +14,7 @@ sentences = []
 labels = []
 urls = []
 
-with open('sarcasm.json', encoding='utf-8') as f:
+with open('Ch 5 - Intro to NL Processing\sarcasm.json', encoding='utf-8') as f:
 
     # Each line is its own JSON object
     for line in f:

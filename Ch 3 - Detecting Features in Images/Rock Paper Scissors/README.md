@@ -8,6 +8,9 @@ Training and validation generators MUST use the same target_size.
 If the model input is (150,150,3), both generators must use target_size=(150,150).
 Mismatched sizes cause Dense layer shape errors during validation.
 
+Install:
+pip install scipy 
+
 use this if modes become issue again
 what mode it's running in
 print("Train class mode:", train_generator.class_mode)

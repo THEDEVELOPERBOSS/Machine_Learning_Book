@@ -10,7 +10,7 @@ tokenizer = Tokenizer()
 window_size = 10
 sentences = []
 
-data = open('irish-lyrics.csv').read()
+data = open('Ch 8 - Using TF to Create Text\irish-lyrics.csv').read()
 corpus = data.lower().split('\n')
 
 # Turns the corpus into one long list of words
