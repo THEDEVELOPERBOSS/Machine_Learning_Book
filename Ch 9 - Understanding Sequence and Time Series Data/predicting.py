@@ -1,7 +1,12 @@
-import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib
-matplotlib.use("TkAgg")
+import matplotlib 
+# Set backend before importing pyplot to avoid import errors in some environments
+try:
+    matplotlib.use("TkAgg")
+except Exception:
+    # fallback to a non-interactive backend if TkAgg isn't available
+    matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 # Create a time series that has a trend, seasonality and noise
 def plot_series(time, series, format='-', start=0, end=None):
