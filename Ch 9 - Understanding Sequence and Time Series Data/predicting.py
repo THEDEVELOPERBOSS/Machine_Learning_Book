@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib 
-from tensorflow import keras
 # Set backend before importing pyplot to avoid import errors in some environments
 try:
     matplotlib.use("TkAgg")
