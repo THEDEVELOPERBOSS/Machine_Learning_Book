@@ -86,9 +86,36 @@ for feature, label in dataset.take(1):
 # Creating a neural network model. Because we have the data in tf.data.Dataset it is very easy w/ tf.keras
 # A simple DNN(Deep Neural Network)
 dataset = windowed_dataset(series, window_size, batch_size, shuffle_buffer_size)
-
 model = tf.keras.models.Sequential([ # Very simple model w/ 2 dense layers. 1st accepts input shape of window_size before an output layer that will contain predicted value
     tf.keras.layers.Dense(10, input_shape=[window_size], activation='relu'),
     tf.keras.layers.Dense(10, activation='relu'),
     tf.keras.layers.Dense(1)
-]) 
+])
+# Model is compiled with a loss function and optimizer. Loss function specifed as mse(mean square error). Commonly used in regression problems
+# Optimizer is sgd(stohastic gradient descent). Takes parameters for lr(learning rate) and momentum and these tweak how optimizer learns
+# Every dataset is different so its good to have control
+model.compile(loss='mse', optimizer=tf.keras.optimizers.SGD(learning_rate=1e-6, momentum=0.9))
+# Training becomes calling model.fit passing it your dataset and specifying the number of epochs
+model.fit(dataset, epochs=100, verbose=1)
+# As your data is in a list called in a series to predict value pass model values from time t to time t+window_size
+# Then gives you predicted value for next time step
+# Predicts value at time step 1,020 take values from steps 1,000 to 1,019(PAY ATTENTION TO HOW SERIES IS SPECIFED BELOW)
+print(series[1000:1020])
+# Gets value at setp 1,020
+print(series[1020])
+# Gets prediction for data point, pass series into model.predict. To keep input shape consistent use np.newaxis
+print(model.predict(series[1000:1020][np.newaxis]))
+# More generic version
+start_point = 1000 
+print(series[start_point:start_point+window_size])
+print(series[start_point+window_size])
+print(model.predict(series[start_point:start_point+window_size][np.newaxis])) 
+# ^ All of this is asssuming a small window size of 20 data points 
+# To change window size reformat dataset by calling windowed_dataset function and retrain model
+# This shows you the overall results for the model with a loop
+forecast = [] # Create a new array 
+for time in range(len(series) - window_size):
+    forecast.append( # Calls predict method and store results in forecast array. Not possible for first n elements of data where n is the window_size because you would not have enough data to make a prediction
+        model.predict(series[time:time + window_size][np.newaxis]) 
+    )
+
