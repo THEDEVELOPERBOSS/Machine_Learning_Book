@@ -94,7 +94,7 @@ model = tf.keras.models.Sequential([ # Very simple model w/ 2 dense layers. 1st 
 # Model is compiled with a loss function and optimizer. Loss function specifed as mse(mean square error). Commonly used in regression problems
 # Optimizer is sgd(stohastic gradient descent). Takes parameters for lr(learning rate) and momentum and these tweak how optimizer learns
 # Every dataset is different so its good to have control
-model.compile(loss='mse', optimizer=tf.keras.optimizers.SGD(learning_rate=1e-6, momentum=0.9))
+model.compile(loss='mse', optimizer=tf.keras.optimizers.SGD(learning_rate=1e-6, momentum=0.9)) # lr is 1 * 10^-6
 # Training becomes calling model.fit passing it your dataset and specifying the number of epochs
 model.fit(dataset, epochs=100, verbose=1)
 # As your data is in a list called in a series to predict value pass model values from time t to time t+window_size
@@ -117,5 +117,35 @@ forecast = [] # Create a new array
 for time in range(len(series) - window_size):
     forecast.append( # Calls predict method and store results in forecast array. Not possible for first n elements of data where n is the window_size because you would not have enough data to make a prediction
         model.predict(series[time:time + window_size][np.newaxis]) 
-    )
+    ) # When it finishes the forecast array will have values of predicitons fro time step 21 onwards
+# Split datset into training and validation sets at time step 1,000
+# Takes only forecasts from this time onwards. Keep in mind forecast is already off by 20(or whatever window size is)
+forecast = forecast[split_time-window_size:]
+results = np.array(forecast)[:, 0, 0]
+# Since it is now in the same shape as prediction data it can be plotted against eachother like so 
+plt.figure(figsize=(10, 6))
 
+plot_series(time_valid, x_valid)
+plot_series(time_valid, results)
+
+# Measures MAE so you don't need to guess by looking at the graph
+mae = np.mean(np.abs(x_valid - results))
+print("MAE is:", mae)
+
+plt.show(block=False) # Makes it so that the program doesnt stop running
+plt.pause(3) # It will show the window for 3 seconds
+plt.close() # Close it after 
+
+# Changes the learning rate overtime. Updated version of compiler further back
+# Calls the tf.keras.callbacks.LearningRateScheduler and have it fill in the lr parameter with desired starting value
+lr_schedule = tf.keras.callbacks.LearningRateScheduler(lambda epoch: 1e-8 * 10**(epoch / 20)) # lr starts at 1e-8, every epoch raises it by a little. After 100 epochs it'll be about 1e-3
+# Initlize the optimizer with learning rate of 1e-8 and specify you want to use callback within model.fit call
+optimizer = tf.keras.optimizers.SGD(learning_rate=1e-8, momentum=0.9)
+model.compile(loss='mse', optimizer=optimizer)
+history = model.fit(dataset, epochs=100, callbacks=[lr_schedule], verbose=1)
+# Plot against learning rate per epoch
+lrs = 1e-8 * (10 ** (np.arange(100) / 20))
+plt.semilogx(lrs, history.history['loss'])
+plt.axis([1e-8, 1e-3, 0, 300])
+
+plt.show
