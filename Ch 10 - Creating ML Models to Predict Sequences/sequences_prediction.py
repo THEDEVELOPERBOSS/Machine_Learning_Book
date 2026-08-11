@@ -1,7 +1,26 @@
 import tensorflow as tf
 import numpy as np 
 import matplotlib.pyplot as plt
-# tf.data conatains APIs useful for manipulating data
+
+# Work around a Keras Tuner bug where it requires tensorboard/hparams imports
+# even when TensorBoard callbacks are not used. This is safe for this script.
+def _disable_kt_tensorboard_dir(self, callbacks, trial, execution=0):
+    return
+
+try:
+    from keras_tuner import RandomSearch
+    from keras_tuner.src.engine.tuner import Tuner as _KTTuner
+except ImportError:
+    from kerastuner.tuners import RandomSearch
+    from kerastuner.engine.tuner import Tuner as _KTTuner
+
+if _KTTuner is not None:
+    _KTTuner._configure_tensorboard_dir = _disable_kt_tensorboard_dir
+
+if hasattr(RandomSearch, '_configure_tensorboard_dir'):
+    RandomSearch._configure_tensorboard_dir = _disable_kt_tensorboard_dir
+
+# tf.data contains APIs useful for manipulating data
 # Use those to create a basic dataset containing 0-9 emulating a time series
 dataset = tf.data.Dataset.range(10)
 dataset = dataset.window(5, shift=1, drop_remainder=True) # shift = 1 causes each window be shifted one spot from previous one. 1st window has the 5 items at 0, next window 5 items beginning at 1, etc
@@ -149,3 +168,74 @@ plt.semilogx(lrs, history.history['loss'])
 plt.axis([1e-8, 1e-3, 0, 300])
 
 plt.show
+
+# Tests different values rather than just the hardcoded 10 neurons in input/output layers
+# Before it was defined like this: tf.keras.layers.Dense(10, input_shape=[window_size], activiation="relu"),
+# Sets it to cycle through a number of integers rather than being stagnent
+#tf.keras.layers.Dense(units=hp.Int('units', min_value=10, max_value=30, step=2), activation='relu', input_shape=[window_size])
+# ^ Defines that the layer will be tested with several input values, starting with 10 and increases to 30 by 2. This will result in the model training 11 times
+# Before when model was compiled value of momentum was hardcoed to 0.9
+# optimizer = tf.keras.optimizers.SGD(learing_rate=1e-5, momentum=0.9)
+# Change it to cycle through options 
+# optimizer=tf.keras.optimizers.SGD(hp.Choice('momentum', values=[.9, .7, .5, .3]), learning_rate=1e-5) # Gives 4 choices so 44 combinations when paired with model archetiture above
+# Function that builds model
+def build_model(hp):
+    model = tf.keras.models.Sequential()
+
+    model.add(tf.keras.layers.Dense(
+        units=hp.Int(
+            'units',
+            min_value=10,
+            max_value=30,
+            step=2
+        ),
+        activation='relu',
+        input_shape=[window_size]
+    ))
+
+    model.add(tf.keras.layers.Dense(10, activation='relu'))
+    model.add(tf.keras.layers.Dense(1))
+
+    model.compile(
+        loss='mse',
+        optimizer=tf.keras.optimizers.SGD(
+            momentum=hp.Choice(
+                'momentum',
+                values=[0.9, 0.7, 0.5, 0.3]
+            ),
+            learning_rate=1e-5
+        )
+    )
+
+    return model
+    
+
+# Manages all iterations for this model with Keras Tuner
+tuner = RandomSearch(build_model, 
+                     objective='loss', 
+                     max_trials=150, 
+                     executions_per_trial=3, 
+                     directory='my_dir', 
+                     project_name='hello',
+                     overwrite=True)
+
+# Bypass Keras Tuner TensorBoard/hparams import path in this environment.
+# This avoids the `tensorboard.plugins.hparams` import error during search.
+# Patch both the class and the specific tuner instance.
+try:
+    tuner._configure_tensorboard_dir = lambda callbacks, trial, execution=0: None
+except Exception:
+    pass
+
+if hasattr(RandomSearch, '_configure_tensorboard_dir'):
+    RandomSearch._configure_tensorboard_dir = _disable_kt_tensorboard_dir
+
+# ^ Model is defined by passing it to function that was described earlier
+# Objective being loss means you want to minimize the loss 
+# Starts search. Sort of like model.fit
+tuner.search(dataset, 
+             epochs=100, 
+             verbose=8) # Running this with the synthetic series will train models with every possible hyperparameter according to the options you want to try
+# Shows top ten results based on objective in this case loss
+tuner.results_summary()
+
